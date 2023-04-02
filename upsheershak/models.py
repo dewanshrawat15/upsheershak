@@ -50,14 +50,14 @@ class FileRequest(models.Model):
         if self.detected_lang:
             captions[self.detected_lang] = s3.generate_presigned_url('get_object',
                 Params={'Bucket': settings.AWS_STORAGE_BUCKET_NAME,
-                        'Key': f"/files/{self.key}/{self.key}.srt"},
+                        'Key': f"files/{self.key}/{self.key}.srt"},
                 ExpiresIn=expiration)
         if self.detected_lang in codes:
             codes = [lang for lang in codes if lang != self.detected_lang]
         for code in codes:
             captions[code] = s3.generate_presigned_url('get_object',
                   Params={'Bucket': settings.AWS_STORAGE_BUCKET_NAME,
-                          'Key': f"/files/{self.key}/{self.key}-{code}.srt"},
+                          'Key': f"files/{self.key}/{self.key}-{code}.srt"},
                   ExpiresIn=expiration)
         return captions
 
