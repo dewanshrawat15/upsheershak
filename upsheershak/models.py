@@ -60,3 +60,6 @@ class FileRequest(models.Model):
                           'Key': f"/files/{self.key}/{self.key}-{code}.srt"},
                   ExpiresIn=expiration)
         return captions
+
+
+    # def get_audios(self):

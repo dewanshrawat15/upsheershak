@@ -9,6 +9,7 @@ from django.utils import timezone
 from mysite import settings
 from .models import FileRequest
 from .utils import s3
+from .audio import read_srt
 
 class ResultSegment:
 
@@ -185,6 +186,18 @@ def run_translations(s3, lang_codes, file_name):
         return
 
 
+def process_subtitles(subtitles, key):
+    for subtitle in subtitles:
+        myobj = gTTS(text=subtitle.text, lang=lang, slow=False)
+        myobj.save(f"{key}-{lang}-{subtitle.id}.mp3")
+
+
+def create_audios(lang_codes, key):
+    default_lang_filename = key + ".srt"
+    subtitles = read_srt(default_lang_filename)
+    process_subtitles(subtitles, key)
+
+
 def run_transcription(s3_key):
     res = FileRequest.objects.filter(key=s3_key)
     if len(res) == 0:
@@ -217,4 +230,6 @@ def run_transcription(s3_key):
             file_request = FileRequest.objects.filter(key=s3_key)[0]
             file_request.is_processed = True
             file_request.save()
+            background_thread = Thread(target=create_audios, args=(lang_codes, key))
+            background_thread.start()
         return

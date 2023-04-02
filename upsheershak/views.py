@@ -119,6 +119,8 @@ class TranscriptionResultAPI(APIView):
             return Response({
                 "message": {
                     "file": file_result["file"],
-                    "captions": file_result.get_captions()
+                    "captions": file.get_captions(),
+                    "audios": file.get_audios(),
+                    "detected_lang": file_result["detected_lang"]
                 }
             }, status=status.HTTP_200_OK)
