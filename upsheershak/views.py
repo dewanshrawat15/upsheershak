@@ -120,7 +120,7 @@ class TranscriptionResultAPI(APIView):
                 "message": {
                     "file": file_result["file"],
                     "captions": file.get_captions(),
-                    "audios": file.get_audios(),
+                    # "audios": file.get_audios(),
                     "detected_lang": file_result["detected_lang"]
                 }
             }, status=status.HTTP_200_OK)
