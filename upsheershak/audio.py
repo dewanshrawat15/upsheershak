@@ -32,7 +32,3 @@ def read_srt(fileName):
         if len(line_data) > 0:
             subtitles.append(SubtitleLine(line_data[0], start, end, line_data[2]))
         return subtitles
-
-for subtitle in subtitles:
-    myobj = gTTS(text=subtitle.text, lang=lang, slow=False)
-    myobj.save(f"{subtitle.id}.mp3")
